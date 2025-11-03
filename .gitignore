@@ -9,3 +9,6 @@ __pycache__/
 *.txt
 *.sql
 aws_step_helpers/
+# Secrets
+.env
+airflow.env

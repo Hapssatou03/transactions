@@ -1,0 +1,68 @@
+[2025-11-03T09:38:11.738+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2025-11-03T09:38:11.759+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: transactions_pipeline.upload_raw_to_s3 manual__2025-11-03T09:33:08.757226+00:00 [queued]>
+[2025-11-03T09:38:11.769+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: transactions_pipeline.upload_raw_to_s3 manual__2025-11-03T09:33:08.757226+00:00 [queued]>
+[2025-11-03T09:38:11.770+0000] {taskinstance.py:2306} INFO - Starting attempt 2 of 2
+[2025-11-03T09:38:11.785+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): upload_raw_to_s3> on 2025-11-03 09:33:08.757226+00:00
+[2025-11-03T09:38:11.794+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'transactions_pipeline', 'upload_raw_to_s3', 'manual__2025-11-03T09:33:08.757226+00:00', '--job-id', '4', '--raw', '--subdir', 'DAGS_FOLDER/***_dag_transactions.py', '--cfg-path', '/tmp/tmp6jqix7mp']
+[2025-11-03T09:38:11.797+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62 DeprecationWarning: This process (pid=251) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2025-11-03T09:38:11.797+0000] {standard_task_runner.py:91} INFO - Job 4: Subtask upload_raw_to_s3
+[2025-11-03T09:38:11.797+0000] {standard_task_runner.py:64} INFO - Started process 252 to run task
+[2025-11-03T09:38:11.854+0000] {task_command.py:426} INFO - Running <TaskInstance: transactions_pipeline.upload_raw_to_s3 manual__2025-11-03T09:33:08.757226+00:00 [running]> on host 46ce264aba60
+[2025-11-03T09:38:11.948+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='hapssatou' AIRFLOW_CTX_DAG_ID='transactions_pipeline' AIRFLOW_CTX_TASK_ID='upload_raw_to_s3' AIRFLOW_CTX_EXECUTION_DATE='2025-11-03T09:33:08.757226+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-11-03T09:33:08.757226+00:00'
+[2025-11-03T09:38:11.949+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2025-11-03T09:38:11.971+0000] {base_aws.py:587} WARNING - Unable to find AWS Connection ID 'aws_default', switching to empty.
+[2025-11-03T09:38:11.973+0000] {base_aws.py:164} INFO - No connection ID provided. Fallback on boto3 credential strategy (region_name=None). See: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html
+[2025-11-03T09:38:12.317+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2025-11-03T09:38:12.318+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/airflow_dag_transactions.py", line 21, in upload_raw_to_s3
+    s3.load_file(filename=RAW_LOCAL, key=key, bucket_name=BUCKET, replace=True)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/amazon/aws/hooks/s3.py", line 135, in wrapper
+    return func(*bound_args.args, **bound_args.kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/amazon/aws/hooks/s3.py", line 89, in wrapper
+    return func(*bound_args.args, **bound_args.kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/amazon/aws/hooks/s3.py", line 1098, in load_file
+    client.upload_file(filename, bucket_name, key, ExtraArgs=extra_args, Config=self.transfer_config)
+  File "/home/airflow/.local/lib/python3.12/site-packages/boto3/s3/inject.py", line 145, in upload_file
+    return transfer.upload_file(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/boto3/s3/transfer.py", line 372, in upload_file
+    future.result()
+  File "/home/airflow/.local/lib/python3.12/site-packages/s3transfer/futures.py", line 103, in result
+    return self._coordinator.result()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/s3transfer/futures.py", line 266, in result
+    raise self._exception
+  File "/home/airflow/.local/lib/python3.12/site-packages/s3transfer/tasks.py", line 269, in _main
+    self._submit(transfer_future=transfer_future, **kwargs)
+  File "/home/airflow/.local/lib/python3.12/site-packages/s3transfer/upload.py", line 591, in _submit
+    upload_input_manager.provide_transfer_size(transfer_future)
+  File "/home/airflow/.local/lib/python3.12/site-packages/s3transfer/upload.py", line 244, in provide_transfer_size
+    self._osutil.get_file_size(transfer_future.meta.call_args.fileobj)
+  File "/home/airflow/.local/lib/python3.12/site-packages/s3transfer/utils.py", line 256, in get_file_size
+    return os.path.getsize(filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen genericpath>", line 62, in getsize
+FileNotFoundError: [Errno 2] No such file or directory: '/opt/airflow/dags/data/transactions_raw_20251028.csv'
+[2025-11-03T09:38:12.333+0000] {taskinstance.py:1206} INFO - Marking task as FAILED. dag_id=transactions_pipeline, task_id=upload_raw_to_s3, run_id=manual__2025-11-03T09:33:08.757226+00:00, execution_date=20251103T093308, start_date=20251103T093811, end_date=20251103T093812
+[2025-11-03T09:38:12.346+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 4 for task upload_raw_to_s3 ([Errno 2] No such file or directory: '/opt/airflow/dags/data/transactions_raw_20251028.csv'; 252)
+[2025-11-03T09:38:12.373+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2025-11-03T09:38:12.395+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-11-03T09:38:12.400+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

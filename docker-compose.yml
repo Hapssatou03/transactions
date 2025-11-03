@@ -1,0 +1,55 @@
+version: "3.8"
+
+# (Tu peux supprimer "version:" car obsolète)
+x-airflow-common: &airflow-common
+  image: apache/airflow:2.9.3
+  environment: &airflow-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    AIRFLOW__CORE__FERNET_KEY: ""
+    _PIP_ADDITIONAL_REQUIREMENTS: >
+      apache-airflow-providers-amazon boto3
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: Europe/Paris
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+  volumes:
+    - ./:/opt/airflow
+  user: "${AIRFLOW_UID:-50000}:0"
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    ports:
+      - "5433:5432"
+
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    depends_on:
+      - postgres
+    command: >
+      -c "airflow db migrate && airflow users create --username airflow --password airflow --firstname admin --lastname user --role Admin --email admin@example.com"
+
+  scheduler:
+    <<: *airflow-common
+    command: scheduler
+    depends_on:
+      - postgres
+    ports:
+      - "8793:8793"
+
+  webserver:
+    <<: *airflow-common
+    command: webserver
+    depends_on:
+      - scheduler
+      - postgres
+    ports:
+      - "8080:8080"

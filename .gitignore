@@ -1,0 +1,11 @@
+AWS_REGION=eu-west-3
+S3_BUCKET=hapssatou-datalake
+RAW_LOCAL=~/project-data/data/transactions_raw_20251028.csv
+CLEAN_LOCAL=~/project-data/data/transactions_clean_local.csv
+.env
+__pycache__/
+*.parquet
+*.csv
+*.txt
+*.sql
+aws_step_helpers/
